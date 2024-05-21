@@ -1,8 +1,8 @@
-import React from 'react';
-
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 const Balance = ({balance}) => {
-    // Assuming a fixed balance for demonstration purposes
 
+    
     return (
         <div className='balance'>
             <h2>Current Balance</h2>

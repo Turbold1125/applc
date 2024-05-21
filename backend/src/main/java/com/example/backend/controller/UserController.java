@@ -5,6 +5,7 @@ import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,20 +38,11 @@ public class UserController {
         return ResponseEntity.ok("Login successful");
     }
 
-    @GetMapping("/{username}/balance")
-    public ResponseEntity<Double> getBalance(@PathVariable String username) {
-        Users user = userService.findByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(user.getBalance());
-    }
-
     @GetMapping("/{username}")
-    public ResponseEntity<Users> getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<Users> getUserById(@PathVariable String username) {
         Users user = userService.findByUsername(username);
         if (user == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.ok(user);
     }
