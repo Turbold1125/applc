@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -6,32 +7,36 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        if (username === 'admin' && password === 'admin') {
+        try {
+            const response = await axios.post('http://localhost:8080/api/users/login', { username, password });
+            alert(response.data);
             navigate('/home');
-        } else {
+        } catch (error) {
             alert('Invalid credentials');
         }
     };
 
     return (
-        <div>
-            <h1>Login Page</h1>
-            <form onSubmit={handleLogin}>
+        <div className='background login'>
+            <h1 className='login_title'>Тавтай морилно уу.</h1>
+            <form onSubmit={handleLogin} className='login_form'>
                 <input 
                     type="text" 
-                    placeholder="Username" 
+                    placeholder="Нэвтрэх нэр" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
+                    className='login_email'
                 />
                 <input 
                     type="password" 
-                    placeholder="Password" 
+                    placeholder="Нууц үг" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
+                    className='login_password'
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className='btn'>Нэвтрэх</button>
             </form>
         </div>
     );

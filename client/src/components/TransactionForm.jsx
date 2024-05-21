@@ -29,6 +29,8 @@ const TransactionForm = ({ addTransaction }) => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <hr />
+            <h2 className='trform_title'>Шилжүүлэг хийх</h2>
             <input 
                 type="text" 
                 placeholder="Transfer Account" 
@@ -65,7 +67,7 @@ const TransactionForm = ({ addTransaction }) => {
                 value={currency} 
                 onChange={(e) => setCurrency(e.target.value)} 
             />
-            <button type="submit">Submit</button>
+            <button type="submit" className='btn'>Submit</button>
         </form>
     );
 };

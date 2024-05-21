@@ -2,12 +2,14 @@ import React from 'react';
 
 const TransactionList = ({ transactions }) => {
     return (
-        <div>
+        <div className='tr_list'>
             <h2>Transaction List</h2>
             <ul>
                 {transactions.map((transaction, index) => (
                     <li key={index}>
-                        {transaction.transferAccount}= {transaction.accountReceivable}: {transaction.transactionAmount} {transaction.currency}
+                        <p>Хүлээн авагч: {transaction.accountReceivable}</p>
+                        <p>Илгээгч: {transaction.transferAccount}</p>
+                        <p>Мөнгөн дүн: {transaction.transactionAmount} {transaction.currency}</p>
                     </li>
                 ))}
             </ul>
