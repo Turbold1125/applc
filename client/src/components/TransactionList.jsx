@@ -26,6 +26,7 @@ const TransactionList = ({ transactions }) => {
                         <p>Хүлээн авагч: {transaction.accountReceivable}</p>
                         <p>Илгээгч: {transaction.transferAccount}</p>
                         <p>Мөнгөн дүн: {transaction.transactionAmount} {transaction.currency}</p>
+                        <p>Гүйлгээний утга: {transaction.transactionDesc}</p>
                     </li>
                 ))}
             </ul>

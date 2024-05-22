@@ -9,6 +9,7 @@ const TransactionForm = ({ addTransaction, user }) => {
     const [currencies, setCurrencies] = useState([]);
     const [receivingBank, setReceivingBank] = useState('');
     const [banks, setBanks] = useState([]);
+    const [transactionDesc, setTransactionDesc] = useState('');
     
     useEffect(() => {
         
@@ -43,6 +44,7 @@ const TransactionForm = ({ addTransaction, user }) => {
             recipientName,
             transactionAmount,
             currency,
+            transactionDesc
         };
         addTransaction(newTransaction);
         setTransferAccount('');
@@ -51,6 +53,7 @@ const TransactionForm = ({ addTransaction, user }) => {
         setRecipientName('');
         setTransactionAmount('');
         setCurrency('');
+        setTransactionDesc('');
     };
     // const handleSubmit = async (e) => {
     //     e.preventDefault();
@@ -130,6 +133,12 @@ const TransactionForm = ({ addTransaction, user }) => {
                     <option key={cur.id} value={cur.code}>{cur.code}</option>
                 ))}
             </select>
+            <input 
+                type="number" 
+                placeholder="Гүйлгээний утга" 
+                value={transactionDesc} 
+                onChange={(e) => setTransactionDesc(e.target.value)} 
+            />
             <button type="submit" className='btn'>Илгээх</button>
         </form>
     );
