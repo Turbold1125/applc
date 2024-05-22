@@ -24,14 +24,14 @@ public class Users {
 
     private Double balance = 0.0;
 
-    private Integer accounts;
+    private Long accounts;
 
     @OneToMany(mappedBy = "users")
     private List<Transaction> transactions;
 
     public Users() {}
 
-    public Users(String username, String password, Double balance, Integer accounts, List<Transaction> transactions) {
+    public Users(String username, String password, Double balance, Long accounts, List<Transaction> transactions) {
         this.username = username;
         this.password =  password;
         this.balance = balance;

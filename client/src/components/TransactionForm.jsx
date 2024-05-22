@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-const TransactionForm = ({ addTransaction }) => {
+const TransactionForm = ({ addTransaction, user }) => {
     const [transferAccount, setTransferAccount] = useState('');
     const [accountReceivable, setAccountReceivable] = useState('');
     const [recipientName, setRecipientName] = useState('');
@@ -11,11 +11,11 @@ const TransactionForm = ({ addTransaction }) => {
     const [banks, setBanks] = useState([]);
     
     useEffect(() => {
+        
         const fetchBanks = async () => {
             try {
-                const responses = await axios.get('http://localhost:8080/api/banks/all');
-                setBanks(responses.data);
-                console.log(responses.data);
+                const response = await axios.get('http://localhost:8080/api/banks/all');
+                setBanks(response.data);
             } catch (error) {
                 console.error('Error fetching banks:', error);
             }
@@ -29,7 +29,7 @@ const TransactionForm = ({ addTransaction }) => {
                 console.error('Error fetching currencies:', error);
             }
         };
-
+        
         fetchBanks();
         fetchCurrencies();
     }, []);
@@ -52,42 +52,71 @@ const TransactionForm = ({ addTransaction }) => {
         setTransactionAmount('');
         setCurrency('');
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const newTransaction = {
+    //         users: { id: 1 }, 
+    //         bank: { id: banks.find(bank => bank.name === receivingBank)?.id }, 
+    //         currency: { id: currencies.find(cur => cur.code === currency)?.id },
+    //         receiverBankAccount: accountReceivable,
+    //         receiverUsername: recipientName,
+    //         amount: parseFloat(transactionAmount),
+    //         description: "Payment for services"
+    //     };
+    //     try {
+    //         const response = await axios.post('http://localhost:8080/api/transactions/create', newTransaction, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             }
+    //         });
+    //         addTransaction(response.data);
+    //         setTransferAccount('');
+    //         setReceivingBank('');
+    //         setAccountReceivable('');
+    //         setRecipientName('');
+    //         setTransactionAmount('');
+    //         setCurrency('');
+    //     } catch (error) {
+    //         console.error('Error creating transaction:', error);
+    //     }
+    // }
 
     return (
+        
         <form onSubmit={handleSubmit}>
             <hr />
-            <h2 className='trform_title'>Шилжүүлэг хийх</h2>
+            <h2 className='trform_title'>Шилжүүлэг хийх </h2>
             <input 
                 type="text" 
-                placeholder="Transfer Account" 
-                value={transferAccount} 
+                placeholder={user.accounts} 
+                value={user.accounts} 
                 onChange={(e) => setTransferAccount(e.target.value)} 
             />
             <select 
-    value={receivingBank} 
-    onChange={(e) => setReceivingBank(e.target.value)} 
-    className="select-dropdown"
->
-    <option value="" disabled>Select Bank</option>
-    {banks.map((bank) => (
-        <option key={bank.id} value={bank.name}>{bank.name}</option>
-    ))}
-</select>
+                value={receivingBank} 
+                onChange={(e) => setReceivingBank(e.target.value)} 
+                className="select-dropdown"
+            >
+                <option value="" disabled>Банк сонгох</option>
+                {banks.map((bank) => (
+                <option key={bank.id} value={bank.name}>{bank.name}</option>
+                ))}
+            </select>
             <input 
                 type="text" 
-                placeholder="Account Receivable" 
+                placeholder="Хүлээн авах данс" 
                 value={accountReceivable} 
                 onChange={(e) => setAccountReceivable(e.target.value)} 
             />
             <input 
                 type="text" 
-                placeholder="Recipient Name" 
+                placeholder="Хүлээн авагчийн нэр" 
                 value={recipientName} 
                 onChange={(e) => setRecipientName(e.target.value)} 
             />
             <input 
                 type="number" 
-                placeholder="Transaction Amount" 
+                placeholder="Гүйлгээний дүн" 
                 value={transactionAmount} 
                 onChange={(e) => setTransactionAmount(e.target.value)} 
             />
@@ -96,12 +125,12 @@ const TransactionForm = ({ addTransaction }) => {
                 onChange={(e) => setCurrency(e.target.value)} 
                 className="select-dropdown"
             >
-                <option value="" disabled>Select Currency</option>
+                <option value="" disabled>Мөнгөн тэмдэгт сонгох</option>
                 {currencies.map((cur) => (
                     <option key={cur.id} value={cur.code}>{cur.code}</option>
                 ))}
             </select>
-            <button type="submit" className='btn'>Submit</button>
+            <button type="submit" className='btn'>Илгээх</button>
         </form>
     );
 };

@@ -18,15 +18,12 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "users_id", nullable = false)
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name = "bank_id", nullable = false)
     private Bank bank;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
     private String receiverBankAccount;
