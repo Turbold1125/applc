@@ -6,15 +6,17 @@ const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-
+    
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/api/users/login', { username, password });
-            alert(response.data);
+            const sessionId = response.data;
+            localStorage.setItem('sessionId', sessionId); 
             navigate('/home');
         } catch (error) {
-            alert('Invalid credentials');
+            console.error('Error logging in:', error);
+            alert('Login failed');
         }
     };
 

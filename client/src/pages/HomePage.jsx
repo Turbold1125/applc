@@ -16,26 +16,32 @@ const HomePage = () => {
     };
 
     const handleLogout = () => {
-        navigate('/login');
+        localStorage.removeItem('sessionId');
+        navigate('/');
     };
     
     useEffect(() => {
-        const fetchTransactions = async () => {
+        const fetchUserData = async () => {
             try {
-                const userId = 'turuu';
-                const userResponse = await axios.get(`http://localhost:8080/api/users/${userId}`);
+                const sessionId = localStorage.getItem('sessionId');
+                if (!sessionId) {
+                    navigate('/');
+                    return;
+                }
+
+                const userResponse = await axios.get(`http://localhost:8080/api/users/session/${sessionId}`);
                 setUser(userResponse.data);
                 console.log(userResponse.data);
                 
-                // const transactionsResponse = await axios.get(`http://localhost:8080/api/transactions/users/${userId}`);
-                // setTransactions(transactionsResponse.data);
             } catch (error) {
-                console.error('Error fetching transactions:', error);
+                console.error('Error fetching user data:', error);
+                navigate('/');
             }
         };
 
-        fetchTransactions();
-    }, []);
+        fetchUserData();
+    }, [navigate]);
+    
     
     return (
         <div className='background home'>

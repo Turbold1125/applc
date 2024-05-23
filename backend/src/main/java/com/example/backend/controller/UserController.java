@@ -20,27 +20,32 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-        public Users registerUser(@RequestBody Users users) {
-        return userService.register(users);
+    public ResponseEntity<Users> registerUser(@RequestBody Users users) {
+        Users registeredUser = userService.register(users);
+        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody Users user) {
-        Users existingUser = userService.findByUsername(user.getUsername());
-        
-        if (existingUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-        }
-        
-        if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+        Users loggedInUser = userService.login(user);
+        if (loggedInUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(loggedInUser.getSessionId());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<Users> getUserById(@PathVariable String username) {
         Users user = userService.findByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/session/{sessionId}")
+    public ResponseEntity<Users> getUserBySessionId(@PathVariable String sessionId) {
+        Users user = userService.findBySessionId(sessionId);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

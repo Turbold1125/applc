@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -21,16 +22,26 @@ public class UserService {
         return userRepository.save(users);
     }
 
+    public Users login(Users user) {
+        Users existingUser = findByUsername(user.getUsername());
+        if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            String sessionId = UUID.randomUUID().toString();
+            existingUser.setSessionId(sessionId);
+            userRepository.save(existingUser);
+            return existingUser;
+        }
+        return null;
+    }
+
+    public Users findBySessionId(String sessionId) {
+        return userRepository.findBySessionId(sessionId);
+    }
+
     public Users findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     public List<Users> findAll() {
         return userRepository.findAll();
-    }
-
-    public Users registerUser(Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
     }
 }

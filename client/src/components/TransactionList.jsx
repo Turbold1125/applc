@@ -3,30 +3,33 @@ import React, {useState} from 'react';
 const TransactionList = ({ transactions }) => {
     const [searchQuery, setSearchQuery] = useState('');
     
-    const handleSearchChange = (e) => {
+    const search = (e) => {
         setSearchQuery(e.target.value);
     };
-    const filteredTransactions = transactions.filter(transaction =>
-        transaction.accountReceivable.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        transaction.recipientName.toLowerCase().includes(searchQuery.toLowerCase())
+    const filter = transactions.filter(transaction =>
+        transaction.receiverBankAccount.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.receiverUsername.toLowerCase().includes(searchQuery.toLowerCase())
     );
     
     return (
         <div className='tr_list'>
-            <h2>Гүйлгээний жагсаалт</h2>
-            <input
-                type="text"
-                placeholder="Хайх..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-            />
+            <div className='search'>
+                <h2>Гүйлгээний жагсаалт</h2>
+                <input
+                    type="text"
+                    placeholder="Хайх..."
+                    value={searchQuery}
+                    onChange={search}
+                />
+            </div>
             <ul>
-                {filteredTransactions.map((transaction, index) => (
+                {filter.map((transaction, index) => (
                     <li key={index}>
-                        <p>Хүлээн авагч: {transaction.accountReceivable}</p>
+                        <p>Хүлээн авагч: {transaction.receiverUsername}</p>
                         <p>Илгээгч: {transaction.transferAccount}</p>
-                        <p>Мөнгөн дүн: {transaction.transactionAmount} {transaction.currency}</p>
-                        <p>Гүйлгээний утга: {transaction.transactionDesc}</p>
+                        <p>Мөнгөн дүн: {transaction.amount} {transaction.currency}</p>
+                        <p>Гүйлгээний утга: {transaction.description}</p>
+                        <p>Он сар: {new Date(transaction.transactionDate).toLocaleString()}</p>
                     </li>
                 ))}
             </ul>

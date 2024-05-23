@@ -6,7 +6,6 @@ const Balance = ({balance}) => {
     return (
         <div className='balance'>
             <h2>Current Balance</h2>
-            {/* Энд данс бичвэл гоё */}
             <h3>${balance}</h3>
         </div>
     );

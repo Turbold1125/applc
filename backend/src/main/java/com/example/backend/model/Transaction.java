@@ -1,14 +1,11 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
-@Setter
-@Getter
 @Entity
 @Data
 public class Transaction {
@@ -18,6 +15,7 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private Users users;
 
     @ManyToOne
@@ -36,16 +34,4 @@ public class Transaction {
 
     private Date transactionDate = new Date();
 
-    public Transaction() {}
-
-    public Transaction(Users users, Bank bank, Currency currency, String receiverBankAccount, String receiverUsername, Double amount, String description, Date transactionDate) {
-        this.users = users;
-        this.bank = bank;
-        this.currency = currency;
-        this.receiverBankAccount = receiverBankAccount;
-        this.receiverUsername = receiverUsername;
-        this.amount = amount;
-        this.description = description;
-        this.transactionDate = transactionDate;
-    }
 }

@@ -1,14 +1,11 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Setter
-@Getter
 @Entity
 @Data
 public class Users {
@@ -26,16 +23,9 @@ public class Users {
 
     private Long accounts;
 
+    private String sessionId;
+
     @OneToMany(mappedBy = "users")
+    @JsonManagedReference
     private List<Transaction> transactions;
-
-    public Users() {}
-
-    public Users(String username, String password, Double balance, Long accounts, List<Transaction> transactions) {
-        this.username = username;
-        this.password =  password;
-        this.balance = balance;
-        this.accounts = accounts;
-        this.transactions = transactions;
-    }
 }
